@@ -1,0 +1,55 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import App from "./App";
+import Record from "./Record";
+import Layout from "./Layout";
+import Login from "./Login";
+import Products from "./Products";
+import ProductsList from "./ProdutList";
+import ProductDetails from "./ProductDetails";
+import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PublicRoute";
+
+export default function Routing() {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Layout />,
+      children: [
+        {
+          index: true,
+          element: <App />,
+        },
+        {
+          path: "records",
+          element: (
+            <ProtectedRoute>
+              <Record />,
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "login",
+          element: (
+            <PublicRoute>
+              <Login />,
+            </PublicRoute>
+          ),
+        },
+        {
+          path: "product",
+          element: <Products />,
+        },
+        {
+          path: "products",
+          element: <ProductsList />,
+        },
+        {
+          path: "product/:id",
+          element: <ProductDetails />,
+        },
+      ],
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
+}
