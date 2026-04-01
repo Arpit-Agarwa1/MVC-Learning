@@ -1,58 +1,101 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import "./ProductList.css";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "./context/cartContext";
 
 export default function ProductsList() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const { addToCart } = useContext(CartContext);
+
+  const userId = localStorage.getItem("userId");
+
+  useEffect(function () {
     fetchProducts();
   }, []);
 
-  const fetchProducts = async () => {
+  async function fetchProducts() {
     try {
       const res = await axios.get("http://localhost:3000/product/products");
       setProducts(res.data);
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error(error);
     }
-  };
+  }
 
-  const openProduct = (id) => {
+  function handleAddToCart(productId) {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Please login first");
+      window.location.href = "/login";
+      return;
+    }
+
+    axios
+      .post(
+        "http://localhost:3000/cart/add",
+        {
+          productId: productId,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+      .then(function () {
+        alert("Added to cart");
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
+  function openProduct(id) {
     navigate(`/product/${id}`);
-  };
+  }
 
   return (
     <div className="products-container">
       <h2 className="products-title">Our Products</h2>
 
       <div className="products-grid">
-        {products.map((item) => (
-          <div
-            key={item._id}
-            className="product-card"
-            onClick={() => openProduct(item._id)}
-          >
-            <img
-              src={`http://localhost:3000/${item.image}`}
-              alt={item.title}
-              className="product-img"
-            />
+        {products.map(function (item) {
+          return (
+            <div key={item._id} className="product-card">
+              <img
+                src={`http://localhost:3000/${item.image}`}
+                alt={item.title}
+                className="product-img"
+                onClick={function () {
+                  openProduct(item._id);
+                }}
+              />
 
-            <div className="product-info">
-              <h3 className="product-title">{item.title}</h3>
+              <div className="product-info">
+                <h3 className="product-title">{item.title}</h3>
 
-              <p className="product-desc">{item.description}</p>
+                <p className="product-desc">{item.description}</p>
 
-              <div className="price-box">
-                <span className="mrp">₹{item.mrp}</span>
-                <span className="selling">₹{item.sellingPrice}</span>
+                <div className="price-box">
+                  <span className="mrp">₹{item.mrp}</span>
+                  <span className="selling">₹{item.sellingPrice}</span>
+                </div>
+
+                <button
+                  className="cart-btn"
+                  onClick={function () {
+                    handleAddToCart(item);
+                  }}
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

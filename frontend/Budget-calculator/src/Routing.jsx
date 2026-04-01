@@ -8,6 +8,7 @@ import ProductsList from "./ProdutList";
 import ProductDetails from "./ProductDetails";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
+import Cart from "./Cart";
 
 export default function Routing() {
   const router = createBrowserRouter([
@@ -46,6 +47,10 @@ export default function Routing() {
         {
           path: "product/:id",
           element: <ProductDetails />,
+        },
+        {
+          path: "/cart",
+          element: <Cart />,
         },
       ],
     },

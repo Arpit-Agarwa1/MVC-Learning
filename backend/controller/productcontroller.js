@@ -18,11 +18,12 @@ export const getSingleProduct = async (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
+  console.log("pass 1");
   try {
     const { title, mrp, sellingPrice, description } = req.body;
 
     const image = req.file ? req.file.filename : null; // ✅ FIX
-
+    console.log("pass 2");
     const product = await Product.create({
       title,
       mrp,

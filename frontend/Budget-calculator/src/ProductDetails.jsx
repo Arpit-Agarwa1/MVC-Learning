@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { CartContext } from "./context/cartContext";
 import "./ProductDetail.css";
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const { addToCart } = useContext(CartContext);
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
@@ -38,7 +40,9 @@ export default function ProductDetail() {
             <span className="mrp-price">₹{product.mrp}</span>
           </div>
 
-          <button className="buy-btn">Buy Now</button>
+          <button className="buy-btn" onClick={() => addToCart(product)}>
+            Add To Cart
+          </button>
         </div>
       </div>
     </div>

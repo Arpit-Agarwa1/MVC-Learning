@@ -6,6 +6,7 @@ import userRouter from "./Router/router.js";
 
 import cookieParser from "cookie-parser";
 import productRouter from "./Router/productrouter.js";
+import cartRouter from "./Router/cartRoute.js";
 
 const app = express();
 const PORT = 3000;
@@ -26,6 +27,7 @@ app.use(cookieParser());
 app.use("/uploads", express.static("uploads"));
 
 app.use("/product", productRouter);
+app.use("/cart", cartRouter);
 
 //
 
