@@ -6,6 +6,7 @@ import { CartContext } from "./context/cartContext";
 import api from "../axios";
 
 export default function ProductsList() {
+  console.log("shaktiman");
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
