@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
+import api from "../axios";
 
 export default function Products() {
   const [form, setForm] = useState({
@@ -32,14 +34,14 @@ export default function Products() {
     formData.append("image", image);
 
     try {
-      const res = await fetch("http://localhost:3000/product/add", {
-        method: "POST",
-        body: formData,
-        credentials: "include",
+      const res = await api.post("/product/add", formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
-      const data = await res.json();
-      console.log(data);
+      console.log(res.data);
 
       alert("Product Added ✅");
 

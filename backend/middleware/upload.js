@@ -4,17 +4,17 @@ import path from "path";
 // storage config
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // folder
+    cb(null, "uploads");
   },
   filename: function (req, file, cb) {
-    const cleanName = file.originalname
-      .replace(/\s+/g, "-") // remove spaces
-      .replace(/[^\w.-]/g, ""); // remove weird characters
-
-    cb(null, Date.now() + "-" + cleanName);
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(
+      null,
+      file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname)
+    );
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage: storage });
 
 export default upload;

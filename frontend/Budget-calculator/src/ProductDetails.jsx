@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { CartContext } from "./context/cartContext";
 import "./ProductDetail.css";
+import api from "../axios";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -14,7 +15,7 @@ export default function ProductDetail() {
   }, [id]);
 
   const fetchProduct = async () => {
-    const res = await axios.get(`http://localhost:3000/product/${id}`);
+    const res = await api.get(`/product/${id}`);
     setProduct(res.data);
   };
 
@@ -25,7 +26,7 @@ export default function ProductDetail() {
       <div className="product-wrapper">
         <div className="product-image">
           <img
-            src={`http://localhost:3000/${product.image}`}
+            src={`${import.meta.env.VITE_BACKEND_URL}/${product.image}`}
             alt={product.title}
           />
         </div>

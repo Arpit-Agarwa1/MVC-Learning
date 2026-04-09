@@ -3,21 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../context/cartContext";
 import "./Header.css";
+import api from "../../axios";
 
 function Header() {
   const navigate = useNavigate();
   const { cart } = useContext(CartContext);
+
   console.log(cart);
 
-  const cartCount = cart ? cart.length : 0;
+  // ✅ calculate total quantity
+  const cartCount = cart
+    ? cart.reduce((total, item) => total + item.quantity, 0)
+    : 0;
 
   async function handleLogout() {
     try {
-      await axios.post(
-        "http://localhost:3000/user/logout",
-        {},
-        { withCredentials: true }
-      );
+      await api.post("/user/logout", {}, { withCredentials: true });
 
       navigate("/login");
     } catch (error) {
@@ -34,7 +35,6 @@ function Header() {
         <button onClick={() => navigate("/records")}>Records</button>
         <button onClick={() => navigate("/product")}>Products</button>
 
-        {/* Cart Icon */}
         <div
           className="cart-container"
           onClick={() => navigate("/cart")}

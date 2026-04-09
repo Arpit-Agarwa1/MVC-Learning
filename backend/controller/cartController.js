@@ -1,9 +1,10 @@
 import Cart from "../model/cartModel.js";
+import Product from "../model/productmodel.js";
 
 // ADD TO CART
 export async function addToCart(req, res) {
   try {
-    const userId = req.userId;
+    const userId = req.user.id; // ✅ correct
     const { productId } = req.body;
 
     const existing = await Cart.findOne({ userId, productId });
@@ -16,8 +17,8 @@ export async function addToCart(req, res) {
     }
 
     const cart = new Cart({
-      userId: userId,
-      productId: productId,
+      userId,
+      productId,
       quantity: 1,
     });
 
@@ -25,6 +26,7 @@ export async function addToCart(req, res) {
 
     res.json(cart);
   } catch (error) {
+    console.log(error);
     res.status(500).json(error);
   }
 }
@@ -32,13 +34,14 @@ export async function addToCart(req, res) {
 // GET CART ITEMS
 export const getCart = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
 
     const cart = await Cart.find({ userId }).populate("productId");
 
-    res.json(cart);
+    res.status(200).json(cart);
   } catch (error) {
-    res.status(500).json(error);
+    console.log("Cart error:", error);
+    res.status(500).json({ message: "Error fetching cart" });
   }
 };
 

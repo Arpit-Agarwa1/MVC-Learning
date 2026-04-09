@@ -56,8 +56,8 @@ export async function login(req, res) {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true, // Set to true in production (requires HTTPS)
+      sameSite: process.env.SAMESITE,
     });
 
     res.json({ message: "Login successful" });
@@ -99,7 +99,7 @@ export const logout = (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: process.env.SAMESITE === "production" ? "none" : "lax",
       secure: false, // true in production (https)
     });
 

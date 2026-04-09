@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
     },
 
     phone: {
-      type: String, // ✅ FIXED
+      type: String,
       required: true,
       unique: true,
       match: [/^\d{10}$/, "Phone must be 10 digits"],
@@ -45,6 +45,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       minlength: 8,
+    },
+
+    resetToken: String,
+    resetTokenExpiry: Date,
+
+    resetPasswordToken: {
+      type: String,
+    },
+
+    resetPasswordExpire: {
+      type: Date,
     },
   },
   { timestamps: true }

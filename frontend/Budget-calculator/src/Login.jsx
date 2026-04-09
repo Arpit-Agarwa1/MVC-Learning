@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import api from "../axios";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -10,6 +11,8 @@ export default function Login() {
     password: "",
   });
 
+  const [error, setError] = useState("");
+
   function handleChange(e) {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
@@ -17,29 +20,36 @@ export default function Login() {
 
   async function handleLogin(e) {
     e.preventDefault();
+    setError("");
 
     try {
-      const res = await axios.post("http://localhost:3000/user/login", data, {
+      const res = await api.post("/user/login", data, {
         withCredentials: true,
       });
-
-      console.log(res.data);
 
       if (res.data.message === "Login successful") {
         navigate("/records");
       }
     } catch (error) {
-      console.error(error.response?.data || error.message);
+      setError(error.response?.data?.message || "Login failed");
     }
   }
 
   return (
-    <div>
+    <div style={{ maxWidth: "400px", margin: "50px auto" }}>
       <h2>Login</h2>
 
-      <form onSubmit={handleLogin}>
+      <form
+        onSubmit={handleLogin}
+        style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+      >
         <label>Username</label>
-        <input name="username" value={data.username} onChange={handleChange} />
+        <input
+          name="username"
+          value={data.username}
+          onChange={handleChange}
+          required
+        />
 
         <label>Password</label>
         <input
@@ -47,7 +57,15 @@ export default function Login() {
           name="password"
           value={data.password}
           onChange={handleChange}
+          required
         />
+
+        {/* forgot password link */}
+        <Link to="/forgot-password" style={{ fontSize: "14px" }}>
+          Forgot Password?
+        </Link>
+
+        {error && <p style={{ color: "red", fontSize: "14px" }}>{error}</p>}
 
         <button type="submit">Login</button>
       </form>

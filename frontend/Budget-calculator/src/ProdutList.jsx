@@ -3,6 +3,7 @@ import axios from "axios";
 import "./ProductList.css";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "./context/cartContext";
+import api from "../axios";
 
 export default function ProductsList() {
   const [products, setProducts] = useState([]);
@@ -18,7 +19,7 @@ export default function ProductsList() {
 
   async function fetchProducts() {
     try {
-      const res = await axios.get("http://localhost:3000/product/products");
+      const res = await api.get("/product/products");
       setProducts(res.data);
     } catch (error) {
       console.error(error);
@@ -34,18 +35,8 @@ export default function ProductsList() {
       return;
     }
 
-    axios
-      .post(
-        "http://localhost:3000/cart/add",
-        {
-          productId: productId,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
+    api
+      .post("/cart/add", { productId }, { withCredentials: true })
       .then(function () {
         alert("Added to cart");
       })
@@ -66,7 +57,7 @@ export default function ProductsList() {
           return (
             <div key={item._id} className="product-card">
               <img
-                src={`http://localhost:3000/${item.image}`}
+                src={`${import.meta.env.VITE_BACKEND_URL}/${item.image}`}
                 alt={item.title}
                 className="product-img"
                 onClick={function () {

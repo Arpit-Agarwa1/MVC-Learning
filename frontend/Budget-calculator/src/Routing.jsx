@@ -7,8 +7,10 @@ import Products from "./Products";
 import ProductsList from "./ProdutList";
 import ProductDetails from "./ProductDetails";
 import ProtectedRoute from "./ProtectedRoute";
-import PublicRoute from "./PublicRoute";
 import Cart from "./Cart";
+import ForgotPassword from "./ForgetPassword";
+import ResetPassword from "./ResetPassword";
+import AdminLogin from "./adminFrontend/AdminLogin";
 
 export default function Routing() {
   const router = createBrowserRouter([
@@ -24,17 +26,21 @@ export default function Routing() {
           path: "records",
           element: (
             <ProtectedRoute>
-              <Record />,
+              <Record />
             </ProtectedRoute>
           ),
         },
         {
           path: "login",
-          element: (
-            <PublicRoute>
-              <Login />,
-            </PublicRoute>
-          ),
+          element: <Login />,
+        },
+        {
+          path: "forgot-password",
+          element: <ForgotPassword />,
+        },
+        {
+          path: "reset-password/:token",
+          element: <ResetPassword />,
         },
         {
           path: "product",
@@ -49,8 +55,12 @@ export default function Routing() {
           element: <ProductDetails />,
         },
         {
-          path: "/cart",
+          path: "cart",
           element: <Cart />,
+        },
+        {
+          path: "admin/login",
+          element: <AdminLogin />,
         },
       ],
     },

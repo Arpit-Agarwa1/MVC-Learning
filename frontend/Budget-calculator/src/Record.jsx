@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import "./Records.css";
+import api from "../axios";
 
 export default function Record() {
   const [records, setRecords] = useState([]);
@@ -15,11 +16,9 @@ export default function Record() {
   };
   const handleUpdate = async () => {
     try {
-      await axios.put(
-        `http://localhost:3000/user/update/${editData._id}`,
-        editData,
-        { withCredentials: true }
-      );
+      await api.put(`/user/update/${editData._id}`, editData, {
+        withCredentials: true,
+      });
 
       setEditData(null);
       fetchRecords(); // refresh

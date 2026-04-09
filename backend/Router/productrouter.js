@@ -11,7 +11,7 @@ const router = express.Router();
 // single image upload
 router.post(
   "/add",
-  () => console.log("Pass 0"),
+
   upload.single("image"),
   createProduct
 );

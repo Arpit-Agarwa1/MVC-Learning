@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../axios";
 export default function App() {
   const navigate = useNavigate();
   const [data, setData] = useState({
@@ -30,7 +31,7 @@ export default function App() {
     console.log("Saved Data:", data);
 
     try {
-      await axios.post("http://localhost:3000/user/register", data);
+      await api.post("/user/register", data);
     } catch (error) {
       console.error("Error submitting data:", error);
     }
