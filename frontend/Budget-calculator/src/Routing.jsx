@@ -58,10 +58,6 @@ export default function Routing() {
           path: "cart",
           element: <Cart />,
         },
-        {
-          path: "admin/login",
-          element: <AdminLogin />,
-        },
       ],
     },
   ]);
