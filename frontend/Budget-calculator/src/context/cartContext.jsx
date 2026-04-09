@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import api from "../../axios";
 
 export const CartContext = createContext();
 
@@ -16,7 +17,7 @@ export const CartProvider = function ({ children }) {
 
   async function fetchCart() {
     try {
-      const res = await axios.get(`http://localhost:3000/cart/${userId}`);
+      const res = await api.get(`/cart/${userId}`);
       setCart(res.data);
     } catch (error) {
       console.error(error);
@@ -25,7 +26,7 @@ export const CartProvider = function ({ children }) {
 
   async function addToCart(productId) {
     try {
-      await axios.post("http://localhost:3000/cart/add", {
+      await api.post("/cart/add", {
         userId: userId,
         productId: productId,
       });
@@ -38,7 +39,7 @@ export const CartProvider = function ({ children }) {
 
   async function removeFromCart(id) {
     try {
-      await axios.delete(`http://localhost:3000/cart/remove/${id}`);
+      await api.delete(`/cart/remove/${id}`);
       fetchCart();
     } catch (error) {
       console.error(error);

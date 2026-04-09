@@ -31,7 +31,7 @@ export default function Record() {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await axios.get("http://localhost:3000/user/records", {
+      const res = await api.get("/user/records", {
         headers: {
           Authorization: `Bearer ${token}`, // ✅ THIS IS MISSING
         },
@@ -46,7 +46,7 @@ export default function Record() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/user/delete/${id}`, {
+      await api.delete(`/user/delete/${id}`, {
         withCredentials: true,
       });
 
