@@ -10,7 +10,6 @@ import ProtectedRoute from "./ProtectedRoute";
 import Cart from "./Cart";
 import ForgotPassword from "./ForgetPassword";
 import ResetPassword from "./ResetPassword";
-import AdminLogin from "./adminFrontend/AdminLogin";
 
 export default function Routing() {
   const router = createBrowserRouter([
