@@ -10,6 +10,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import Cart from "./Cart";
 import ForgotPassword from "./ForgetPassword";
 import ResetPassword from "./ResetPassword";
+import AdminLogin from "./adminFrontend/AdminLogin";
+import AdminHome from "./adminFrontend/AdminHome";
+import ProtectedAdmin from "./adminFrontend/ProtectAdmin";
 
 export default function Routing() {
   const router = createBrowserRouter([
@@ -56,6 +59,23 @@ export default function Routing() {
         {
           path: "cart",
           element: <Cart />,
+        },
+        {
+          path: "admin/login",
+          element: <AdminLogin />,
+        },
+        {
+          path: "admin/home",
+          element: <AdminHome />,
+        },
+
+        {
+          path: "admin/records",
+          element: (
+            <ProtectedAdmin>
+              <Record />
+            </ProtectedAdmin>
+          ),
         },
       ],
     },

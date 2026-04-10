@@ -10,6 +10,9 @@ import cartRouter from "./Router/cartRoute.js";
 import authRoutes from "./Router/authRoutes.js";
 import env from "dotenv";
 import "dotenv/config";
+import bcrypt from "bcrypt";
+
+import adminRoute from "./admin/router/adminRouter.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,9 +25,11 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 await connectDB();
-app.use(cookieParser());
 
 //products
+
+const hashedPassword = await bcrypt.hash("12345", 10);
+console.log("Hashed password:", hashedPassword);
 
 // serve images
 app.use("/uploads", express.static("uploads"));
@@ -36,4 +41,5 @@ app.use("/auth", authRoutes);
 //
 app.use(cookieParser());
 app.use("/user", userRouter);
+app.use("/admin", adminRoute);
 app.listen(PORT, () => console.log(`Server is running on port`, PORT));
